@@ -1,0 +1,12 @@
+term = xterm-256color
+font-family = "MonoLisaCode"
+font-family = "Symbols Nerd Font Mono"
+font-size = 16
+adjust-cell-height = 60%
+window-padding-x = 10
+window-padding-y = 10,50
+theme = "Catppuccin Macchiato"
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor
+keybind = performable:cmd+c=copy_to_clipboard

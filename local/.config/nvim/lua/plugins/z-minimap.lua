@@ -1,0 +1,34 @@
+return {}
+-- return {
+--     {
+--         "Isrothy/neominimap.nvim",
+--         version = "v3.*.*",
+--         lazy = false,
+--         init = function()
+--             -- The following options are recommended when layout == "float"
+--             vim.opt.wrap = false
+--             vim.opt.sidescrolloff = 36 -- Set a large value
+--
+--             --- Put your configuration here
+--             vim.g.neominimap = {
+--                 auto_enable = true,
+--                 x_multiplier = 2,
+--                 sync_cursor = false,
+--                 float = {
+--                     margin = {
+--                         right = 1
+--                     },
+--                     window_border = "none",
+--                     z_index = 2
+--                 },
+--                 search = {
+--                     enabled = true,
+--                     mode = "sign"
+--                 },
+--                 diagnostic = {
+--                     mode = "sign"
+--                 }
+--             }
+--         end,
+--     }
+-- }

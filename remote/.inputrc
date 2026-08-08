@@ -1,0 +1,9 @@
+# Complete filenames ignoring case
+set completion-ignore-case on
+# Show all matches immediately when ambiguous
+set show-all-if-ambiguous on
+# Up/down search history using what I've already typed
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+# No terminal beep
+set bell-style none

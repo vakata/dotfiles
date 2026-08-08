@@ -1,0 +1,58 @@
+return {}
+-- return {
+--     {
+--         "olimorris/codecompanion.nvim",
+--         config = function ()
+--             require("codecompanion").setup({
+--                 strategies = {
+--                     chat = {
+--                         adapter = "ollama",
+--                     },
+--                     inline = {
+--                         adapter = "ollama",
+--                     },
+--                     cmd = {
+--                         adapter = "ollama",
+--                     }
+--                 },
+--                 adapters = {
+--                     http = {
+--                         ollama = function()
+--                             return require("codecompanion.adapters").extend("ollama", {
+--                                 env = {
+--                                     url = "https://bot.vakata.io",
+--                                     authorization = "Basic",
+--                                     api_key = 'dmFrYXRhOmFpcGFyb2xhMTIz',
+--                                 },
+--                                 headers = {
+--                                     ["Content-Type"] = "application/json",
+--                                     ["Authorization"] = "Basic ${api_key}",
+--                                 },
+--                                 schema = {
+--                                     model = {
+--                                         default = 'qwen2.5-coder:14b'
+--                                     },
+--                                     temperature = { default = 0.2 },
+--                                     num_ctx     = { default = 12000 },
+--                                     num_predict = { default = 512 },
+--                                     keep_alive  = { default = "15m" },
+--                                 },
+--                                 opts = {
+--                                     stream = true,
+--                                 },
+--                                 parameters = {
+--                                     sync = true,
+--                                 },
+--                             })
+--                         end,
+--                     }
+--                 },
+--             })
+--             vim.keymap.set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "AI palette" })
+--         end,
+--         dependencies = {
+--             "nvim-lua/plenary.nvim",
+--             "nvim-treesitter/nvim-treesitter",
+--         },
+--     }
+-- }

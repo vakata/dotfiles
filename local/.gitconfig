@@ -1,0 +1,12 @@
+[user]
+	name = Ivan Bozhanov
+	email = git@vakata.com
+[core]
+	excludesfile = /Users/vakata/.gitignore
+	editor = vim
+	fileMode = false
+[pull]
+	rebase = false
+[alias]
+	pushall = !git remote | grep -v base | grep -v upstream | xargs -L1 git push
+	pushalltags = !git remote | grep -v base | grep -v upstream | xargs -L1 git push --tags

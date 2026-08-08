@@ -1,0 +1,54 @@
+return {}
+-- return {
+--     {
+--         "mfussenegger/nvim-dap",
+--         dependencies = {
+--             "rcarriga/nvim-dap-ui",
+--             "theHamsta/nvim-dap-virtual-text",
+--             "nvim-neotest/nvim-nio"
+--         },
+--         config = function()
+--             local dap = require "dap"
+--             local ui = require "dapui"
+--
+--             require("dapui").setup()
+--
+--             dap.configurations.php = {
+--                 {
+--                     name = "PHP: Listen for Xdebug",
+--                     port = 9003,
+--                     request = "launch",
+--                     type = "php",
+--                     hostname = "0.0.0.0"
+--                 }
+--             }
+--
+--             vim.keymap.set("n", "<leader>dt", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+--             vim.keymap.set("n", "<leader>dr", dap.run_to_cursor, { desc = "Run to cursor" })
+--             vim.keymap.set("n", "<leader>dv", function()
+--                 require("dapui").eval(nil, { enter = true })
+--             end, { desc = "Debug cursor variable" })
+--             vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue" })
+--             vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
+--             vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Step over" })
+--             vim.keymap.set("n", "<leader>du", dap.step_out, { desc = "Step out" })
+--             vim.keymap.set("n", "<leaber>db", dap.step_back, { desc = "Step back" })
+--             vim.keymap.set("n", "<leader>dx", function () 
+--                 dap.terminate()
+--                 ui.close()
+--             end, { desc = "Terminate" })
+--             dap.listeners.before.attach.dapui_config = function()
+--                 ui.open()
+--             end
+--             dap.listeners.before.launch.dapui_config = function()
+--                 ui.open()
+--             end
+--             dap.listeners.before.event_terminated.dapui_config = function()
+--                 ui.close()
+--             end
+--             dap.listeners.before.event_exited.dapui_config = function()
+--                 ui.close()
+--             end
+--         end,
+--     },
+-- }
