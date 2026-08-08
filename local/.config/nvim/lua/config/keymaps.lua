@@ -261,6 +261,19 @@ vim.keymap.set("n", "<leader>Ж", [["+P]], {desc="Paste before from system clipb
 vim.keymap.set('n', '<leader>B', '<C-v>', { noremap = true, silent = true, desc = "Visual block mode" })
 vim.keymap.set('i', '<C-g>', '<C-v>', { noremap = true, silent = true, desc = "Enter literal character" })
 vim.keymap.set('i', '<C-v>', '<Esc>"+pa', { noremap = true, silent = true, desc = "Paste" })
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+    vim.g.clipboard = {
+        name = "OSC 52",
+        copy = {
+            ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+            ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+        },
+        paste = {
+            ["+"] = function() return vim.split(vim.fn.getreg(""), "\n") end,
+            ["*"] = function() return vim.split(vim.fn.getreg(""), "\n") end,
+        },
+    }
+end
 vim.keymap.set("v", "<D-c>", '"+y', { desc = "Copy to system clipboard", })
 vim.keymap.set("v", "<M-c>", '"+y', { desc = "Copy to system clipboard", })
 -- command palette
