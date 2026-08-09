@@ -63,6 +63,8 @@ vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup" .. "//"
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("state") .. "/undodir"
 -- vim.opt.winborder = 'rounded'
+--
+vim.opt.guicursor:append("t:block-blinkon0")
 
 -- plugins
 -- vim.g['lightline#bufferline#clickable'] = 1

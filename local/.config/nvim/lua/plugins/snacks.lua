@@ -9,6 +9,7 @@ return {
         input = { enabled = true },
         notifier = { enabled = true },
         terminal = {
+            interactive = true,
             win = {
                 position = "float",
                 border = "rounded"

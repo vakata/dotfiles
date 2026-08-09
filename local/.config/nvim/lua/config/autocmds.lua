@@ -179,12 +179,3 @@ vim.api.nvim_create_autocmd("FileType", {
         end)
     end,
 })
-vim.api.nvim_create_autocmd("TermOpen", {
-    callback = function(args)
-        vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", {
-            buffer = args.buf,
-            silent = true,
-            desc = "Close terminal",
-        })
-    end,
-})
