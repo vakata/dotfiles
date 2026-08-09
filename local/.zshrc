@@ -49,10 +49,9 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
+bindkey -e
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;3C" forward-word
-bindkey  "^[[D"   beginning-of-line
-bindkey  "^[[C"   end-of-line
 
 # aliases
 alias y="yazi"
