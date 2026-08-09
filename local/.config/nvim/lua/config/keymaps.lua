@@ -199,10 +199,11 @@ vim.keymap.set({ 'v', 'n', 't' }, '<leader>вл', ':wincmd l<CR>', { noremap = t
 -- vim.keymap.set('t', '<C-l>', function () require('toggleterm').toggle() end, { noremap = true, silent = false })
 -- vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<C-л>', '<cmd>ToggleTerm direction=float<CR>', { noremap = true, silent = false })
 -- vim.keymap.set('t', '<C-л>', function () require('toggleterm').toggle() end, { noremap = true, silent = false })
-vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<C-space>', '<cmd>ToggleTerm direction=float<CR>', { noremap = true, silent = false, desc = "Open terminal" })
-vim.keymap.set('t', '<C-space>', function () require('toggleterm').toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
+-- vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<C-space>', '<cmd>ToggleTerm direction=float<CR>', { noremap = true, silent = false, desc = "Open terminal" })
+-- vim.keymap.set('t', '<C-space>', function () require('toggleterm').toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
 vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<C-space>', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
 vim.keymap.set('t', '<C-space>', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
+vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<leader>tt', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
 -- comments
 vim.keymap.set('n', '<C-/>', function () require('Comment.api').toggle.linewise.current() end, { noremap = true, silent = true, desc = "Comment out" })
 vim.keymap.set('v', '<C-/>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", { noremap = true, silent = true, desc = "Comment out" })
