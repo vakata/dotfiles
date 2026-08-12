@@ -1,7 +1,5 @@
 -- navigation
 vim.keymap.set('i', '<A-BS>', '<C-w>') -- delete word with alt-backspace
-vim.keymap.set('i', '<A-left>', '<S-left>') -- move by word in insert mode using alt (win habit)
-vim.keymap.set('i', '<A-right>', '<S-right>') -- move by word in insert mode using alt (win habit)
 vim.keymap.set('i', '<C-f>', '<C-^>') -- change language in insert mode
 vim.keymap.set('c', '<C-f>', '<C-^>') -- change language in command mode
 vim.keymap.set('i', '<C-ф>', '<C-^>') -- change language in insert mode
@@ -23,14 +21,12 @@ vim.keymap.set("i", "<C-с>", function()
 end, { noremap = true, desc = "Flash jump from insert mode" })
 vim.keymap.set('n', '<cr>', 'o<esc>', { noremap = true, silent = true }) -- add new line below
 vim.keymap.set('n', '<leader><cr>', 'O<esc>', { noremap = true, silent = true }) -- add new line above
-vim.keymap.set('n', '<leader>j', 'J', { noremap = true, silent = true }) -- add new line above
-vim.keymap.set('n', 'J', 'j', { noremap = true, silent = true }) -- add new line above
-vim.keymap.set('n', 'K', 'k', { noremap = true, silent = true }) -- add new line above
-vim.keymap.set('n', 'L', 'l', { noremap = true, silent = true }) -- add new line above
-vim.keymap.set('n', 'H', 'h', { noremap = true, silent = true }) -- add new line above
--- Allow moving the cursor through wrapped lines with j, k
--- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
--- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', '<leader>j', 'J', { noremap = true, silent = true })
+-- fix for autocapitalize when holding
+vim.keymap.set('n', 'J', 'j', { noremap = true, silent = true })
+vim.keymap.set('n', 'K', 'k', { noremap = true, silent = true })
+vim.keymap.set('n', 'L', 'l', { noremap = true, silent = true })
+vim.keymap.set('n', 'H', 'h', { noremap = true, silent = true })
 -- session
 vim.keymap.set("n", "<leader>ys", function() require("persistence").start() end, { desc = "Start a session" })
 vim.keymap.set("n", "<leader>yx", function() require("persistence").stop() end, { desc = "Stop a session" })
@@ -111,8 +107,6 @@ vim.keymap.set("n", "<leader>лс", function () require('fzf-lua').lsp_document_
 vim.keymap.set("n", "<leader>лк", function () require("fzf-lua").lsp_references() end, { desc = "LSP References" })
 -- file navigation
 vim.keymap.set("n", "-", function () require('oil').open_float() end, { desc = "Open parent directory" })
-vim.keymap.set('n', '<leader>e', ':NvimTreeToggle direction=float<CR>', { noremap = true, silent = false, desc = "Toggle tree" })
-vim.keymap.set('n', '<leader>е', ':NvimTreeToggle direction=float<CR>', { noremap = true, silent = false, desc = "Toggle tree" })
 -- clear highlights
 vim.keymap.set('n', '<Esc>', ':noh<CR>', { noremap = true, silent = true, desc = "Clear highlights" })
 -- Stay in indent mode
@@ -170,10 +164,14 @@ vim.keymap.set('n', '<leader>я', '<C-w>c', { noremap = true, silent = true, des
 vim.keymap.set('n', '<leader>вж', '<C-w>v', { noremap = true, silent = true, desc = "Split window vertically" })
 vim.keymap.set('n', '<leader>вх', '<C-w>s', { noremap = true, silent = true, desc = "Split window horizontally" })
 -- Navigate between splits
-vim.keymap.set({ 'v', 't','n' }, '<C-k>', ':wincmd k<CR>', { noremap = true, silent = true, desc = "Top window" })
-vim.keymap.set({ 'v', 't','n' }, '<C-j>', ':wincmd j<CR>', { noremap = true, silent = true, desc = "Bottom window" })
+vim.keymap.set({ 'v', 't','n' }, '<C-k>', ':bn!<CR>', { noremap = true, silent = true, desc = "Next buffer" })
+vim.keymap.set({ 'v', 't','n' }, '<C-j>', ':bp!<CR>', { noremap = true, silent = true, desc = "Previous buffer" })
 vim.keymap.set({ 'v', 't','n' }, '<C-h>', ':wincmd h<CR>', { noremap = true, silent = true, desc = "Left window" })
 vim.keymap.set({ 'v', 't','n' }, '<C-l>', ':wincmd l<CR>', { noremap = true, silent = true, desc = "Right window" })
+vim.keymap.set({ 'v', 't','n' }, '<C-right>', ':bn!<CR>', { noremap = true, silent = true, desc = "Next buffer" })
+vim.keymap.set({ 'v', 't','n' }, '<M-f>', ':bn!<CR>', { noremap = true, silent = true, desc = "Next buffer" })
+vim.keymap.set({ 'v', 't','n' }, '<C-left>', ':bp!<CR>', { noremap = true, silent = true, desc = "Previous buffer" })
+vim.keymap.set({ 'v', 't','n' }, '<M-b>', ':bp!<CR>', { noremap = true, silent = true, desc = "Previous buffer" })
 vim.keymap.set({ 'n', 'v', 't' }, '<leader>w<up>', ':wincmd k<CR>', { noremap = true, silent = true, desc = "Top window" })
 vim.keymap.set({ 'n', 'v', 't' }, '<leader>w<down>', ':wincmd j<CR>', { noremap = true, silent = true, desc = "Bottom window" })
 vim.keymap.set({ 'n', 'v', 't' }, '<leader>w<left>', ':wincmd h<CR>', { noremap = true, silent = true, desc = "Left window" })
@@ -203,7 +201,7 @@ vim.keymap.set({ 'v', 'n', 't' }, '<leader>вл', ':wincmd l<CR>', { noremap = t
 -- vim.keymap.set('t', '<C-space>', function () require('toggleterm').toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
 vim.keymap.set({ 'n', 'v', 'c', 'i' }, '<C-space>', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
 vim.keymap.set('t', '<C-space>', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
-vim.keymap.set('n', '<leader>tt', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
+-- vim.keymap.set('n', '<leader>tt', function () require('snacks').terminal.toggle() end, { noremap = true, silent = false, desc = "Open terminal" })
 -- comments
 vim.keymap.set('n', '<C-/>', function () require('Comment.api').toggle.linewise.current() end, { noremap = true, silent = true, desc = "Comment out" })
 vim.keymap.set('v', '<C-/>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", { noremap = true, silent = true, desc = "Comment out" })

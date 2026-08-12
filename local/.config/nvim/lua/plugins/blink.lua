@@ -16,12 +16,25 @@ return {
                 'fallback',
             },
 
+            ['<right>'] = {
+                'accept',
+                'fallback',
+            },
             ['<Tab>'] = {
                 'select_next',
                 'fallback',
             },
 
             ['<S-Tab>'] = {
+                'select_prev',
+                'fallback',
+            },
+            ['<down>'] = {
+                'select_next',
+                'fallback',
+            },
+
+            ['<up>'] = {
                 'select_prev',
                 'fallback',
             },
@@ -49,7 +62,7 @@ return {
             list = {
                 selection = {
                     preselect = false,
-                    auto_insert = false,
+                    auto_insert = true,
                 },
             },
 
