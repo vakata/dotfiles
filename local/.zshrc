@@ -52,6 +52,8 @@ setopt HIST_REDUCE_BLANKS
 bindkey -e
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;3C" forward-word
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
 
 # aliases
 alias y="yazi"
