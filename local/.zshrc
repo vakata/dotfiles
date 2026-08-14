@@ -2,7 +2,14 @@
 export ZSH="$HOME/.oh-my-zsh"
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always'
 export FZF_CTRL_T_COMMAND=
-export FZF_DEFAULT_OPTS="--ansi"
+export FZF_DEFAULT_OPTS="
+  --ansi
+  --border=none
+  --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796
+  --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
+  --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796
+  --color=selected-bg:#494d64
+  --color=border:#6e738d,label:#cad3f5"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -52,8 +59,6 @@ setopt HIST_REDUCE_BLANKS
 bindkey -e
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;3C" forward-word
-bindkey '^[[A' history-beginning-search-backward
-bindkey '^[[B' history-beginning-search-forward
 
 # aliases
 alias y="yazi"
@@ -63,7 +68,7 @@ alias g="lazygit"
 alias gp='git pushall ; git pushalltags'
 alias gpo='git pull origin'
 alias ta='tmux new -As default'
-alias fzf='fzf --preview="bat --color=always {}"'
+alias fzf='fzf --preview="bat --color=always {}" --preview-window="right:50%:border-none"'
 alias v='nvim'
 alias ll='ls -alF'
 alias la='ls -A'
