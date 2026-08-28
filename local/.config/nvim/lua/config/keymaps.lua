@@ -276,5 +276,6 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
 end
 vim.keymap.set("v", "<D-c>", '"+y', { desc = "Copy to system clipboard", })
 vim.keymap.set("v", "<M-c>", '"+y', { desc = "Copy to system clipboard", })
+vim.keymap.set("v", "<C-Insert>", '"+y', { desc = "Copy to system clipboard", })
 -- command palette
 vim.keymap.set({"n", "v"}, '<leader>p', function() require("keymap_palette").open() end, { noremap = true, silent = true, desc = "Keymap Palette" })
