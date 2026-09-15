@@ -1,3 +1,4 @@
+tap "vakata/tap", trusted: true
 brew "bash"
 brew "bat"
 brew "bitwarden-cli"
@@ -45,6 +46,7 @@ brew "zlib"
 brew "zls"
 brew "zoxide"
 brew "zsh"
+brew "vakata/tap/dirdiffz"
 cask "adobe-acrobat-reader"
 cask "alt-tab"
 cask "beyond-compare"

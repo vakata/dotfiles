@@ -14,5 +14,4 @@ keybind = ctrl+insert=text:\x1b[99;9u
 keybind = performable:ctrl+insert=copy_to_clipboard:plain
 keybind = cmd+v=paste_from_clipboard
 keybind = shift+insert=paste_from_clipboard
-command = /home/linuxbrew/.linuxbrew/bin/zsh
 
