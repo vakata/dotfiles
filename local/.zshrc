@@ -67,6 +67,7 @@ alias vpn="~/scripts/vpn.sh"
 alias g="lazygit"
 alias gp='git pushall ; git pushalltags'
 alias gpo='git pull origin'
+alias gl='git log --oneline --graph --decorate'
 alias ta='tmux new -As default'
 alias fzf='fzf --preview="bat --color=always {}" --preview-window="right:50%:border-none"'
 alias v='nvim'
