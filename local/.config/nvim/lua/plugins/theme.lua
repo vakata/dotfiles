@@ -11,10 +11,10 @@ return {
                 flavour = 'macchiato',
                 no_italic = true,
                 integrations = {
-                    dropbar = {
-                        enabled = true,
-                        color_mode = true
-                    },
+                    -- dropbar = {
+                    --     enabled = true,
+                    --     color_mode = true
+                    -- },
                     noice = true,
                     blink_cmp = {
                         style = 'bordered',
@@ -175,7 +175,7 @@ return {
                         buffers_color = {
                             inactive = 'lualine_b_inactive'
                         },
-                        padding = 2,
+                        padding = 1,
                         symbols = {
                             modified = ' ●',
                             readonly = ' 󰌾',
