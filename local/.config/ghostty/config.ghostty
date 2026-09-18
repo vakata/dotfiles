@@ -1,8 +1,8 @@
 term = xterm-256color
 font-family = "MonoLisaCode"
 font-family = "Symbols Nerd Font Mono"
-font-size = 16
-adjust-cell-height = 60%
+font-size = 15
+adjust-cell-height = 50%
 window-padding-x = 10
 window-padding-y = 10,50
 theme = "Catppuccin Macchiato"

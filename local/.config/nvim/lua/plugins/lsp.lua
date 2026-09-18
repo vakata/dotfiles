@@ -130,7 +130,7 @@ return {
             -- vim.o.mousemoveevent = true
         end
     },
-    {
-        'Bekaboo/dropbar.nvim',
-    }
+    -- {
+    --     'Bekaboo/dropbar.nvim',
+    -- }
 }
