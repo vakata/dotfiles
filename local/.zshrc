@@ -10,7 +10,7 @@ export FZF_DEFAULT_OPTS="
   --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796
   --color=selected-bg:#494d64
   --color=border:#6e738d,label:#cad3f5"
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -59,6 +59,10 @@ setopt HIST_REDUCE_BLANKS
 bindkey -e
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;3C" forward-word
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[H'  beginning-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^[[F'  end-of-line
 
 # aliases
 alias y="yazi"
