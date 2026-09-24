@@ -4,6 +4,7 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
+        image = { enabled = false },
         dashboard = { enabled = true },
         indent = { enabled = true },
         input = { enabled = true },
