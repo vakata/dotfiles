@@ -1,4 +1,3 @@
-acpica
 apache
 base
 base-devel
@@ -9,11 +8,8 @@ bluez-utils
 bottom
 brightnessctl
 btop
-cabextract
 ccid
 composer
-dkms
-ex-vi-compat
 eza
 fd
 fprintd
@@ -21,9 +17,7 @@ fuzzel
 fzf
 ghostty
 git
-gobject-introspection
 grim
-gtk-doc
 htop
 hypridle
 hyprland
@@ -39,8 +33,6 @@ librewolf
 linux
 linux-firmware
 linux-headers
-linux-lts
-linux-lts-headers
 mako
 man-db
 man-pages
@@ -54,7 +46,6 @@ noto-fonts-emoji
 noto-fonts-extra
 npm
 nwg-look
-opencv
 opensc
 openssh
 pavucontrol
@@ -67,8 +58,6 @@ playerctl
 postgresql
 power-profiles-daemon
 pulsemixer
-python-gobject
-python-pyusb
 qt5-wayland
 qt6-wayland
 reflector
@@ -87,7 +76,6 @@ ttf-nerd-fonts-symbols-mono
 unzip
 upower
 usbutils
-v4l2loopback-dkms
 vim
 vulkan-intel
 wget
