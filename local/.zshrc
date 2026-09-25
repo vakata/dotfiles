@@ -1,5 +1,4 @@
 # exports
-export ZSH="$HOME/.oh-my-zsh"
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always'
 export FZF_CTRL_T_COMMAND=
 export FZF_DEFAULT_OPTS="
@@ -14,7 +13,6 @@ export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export LC_CTYPE="UTF-8"
 export EDITOR='nvim'
 export VISUAL='nvim'
 export GIT_EDITOR='vim'
@@ -31,16 +29,11 @@ autoload -Uz compinit
 compinit
 
 # source all
-#ZSH_THEME="powerlevel10k/powerlevel10k"
-#zstyle :omz:plugins:ssh-agent agent-forwarding yes
-#zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
-#zstyle :omz:plugins:ssh-agent quiet yes
-#zstyle :omz:plugins:ssh-agent lazy yes
-#plugins=(colored-man-pages colorize ssh ssh-agent zsh-autosuggestions zsh-syntax-highlighting)
-#source $ZSH/oh-my-zsh.sh
+if command -v fzf >/dev/null 2>&1; then
+    source <(fzf --zsh)
+fi
 [ -f ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme ] && source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 [ -f ~/.p10k.zsh ] && source ~/.p10k.zsh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [ -f ~/.zshrc.private ] && source ~/.zshrc.private
@@ -89,5 +82,5 @@ tunnel() {
 compdef _hosts o
 compdef _hosts tunnel
 
-eval "$(zoxide init zsh)"
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 

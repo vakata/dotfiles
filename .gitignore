@@ -1,2 +1,4 @@
-/local/.config/keyd/app.lock
-/local/.config/keyd/app.log
+/local/arch/.config/keyd/app.lock
+/local/arch/.config/keyd/app.log
+/*.png
+/*.svg

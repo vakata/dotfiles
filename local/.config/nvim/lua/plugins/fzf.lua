@@ -9,6 +9,7 @@ return {
                         ["ctrl-q"] = "select-all+accept",
                     },
                 },
+                grep = { hidden = true },
                 previewers = {
                     builtin = {
                         treesitter = {
