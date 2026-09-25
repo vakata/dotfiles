@@ -16,7 +16,7 @@ mkdir -p ~/.zsh/plugins
 
 # tmux
 sudo pacman -S --needed tmux
-git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+[[ -d ~/.tmux/plugins/tpm/.git ]] || git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 mkdir -p ~/.local/share/tmux/resurrect
 ~/.tmux/plugins/tpm/bin/install_plugins
 

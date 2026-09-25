@@ -312,7 +312,7 @@ hl.window_rule({
     float = true,
     center = true,
     size = { 900, 700 },
-    border_size = 2,
+    border_size = 2
 })
 
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
@@ -333,7 +333,7 @@ hl.config({
 hl.config({
     scrolling = {
         direction = "down",
-        column_width = 0.90,
+        column_width = 0.9,
         focus_fit_method = 1,
         fullscreen_on_one_column = true,
     },
@@ -409,10 +409,10 @@ hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
-hl.bind(mainMod .. " + H",  hl.dsp.focus({ workspace = "e-1" }))
-hl.bind(mainMod .. " + SHIFT + H",  hl.dsp.window.move({ workspace = "-1", follow = true }))
-hl.bind(mainMod .. " + L", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + SHIFT + L",  hl.dsp.window.move({ workspace = "+1", follow = true }))
+hl.bind(mainMod .. " + H",  hl.dsp.focus({ workspace = "-1" }))
+hl.bind(mainMod .. " + L",  hl.dsp.focus({ workspace = "+1" }))
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ workspace = "-1", follow = true}))
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ workspace = "+1", follow = true}))
 hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
