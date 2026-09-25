@@ -60,7 +60,6 @@ vim.opt.swapfile = true
 vim.opt.directory = vim.fn.stdpath("state") .. "/swap" .. "//"
 vim.opt.backup = true
 vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup" .. "//"
-vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("state") .. "/undodir"
 -- vim.opt.winborder = 'rounded'
 --

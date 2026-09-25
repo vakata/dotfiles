@@ -161,10 +161,10 @@ vim.keymap.set({ 'n', 'v' }, '<leader>х', '<C-^>', { noremap = true, silent = t
 -- Window management
 vim.keymap.set('n', '<leader>q', '<C-w>c', { noremap = true, silent = true, desc = "Close window" })
 vim.keymap.set('n', '<leader>wv', '<C-w>v', { noremap = true, silent = true, desc = "Split window vertically" })
-vim.keymap.set('n', '<leader>wh', '<C-w>s', { noremap = true, silent = true, desc = "Split window horizontally" })
+vim.keymap.set('n', '<leader>ws', '<C-w>s', { noremap = true, silent = true, desc = "Split window horizontally" })
 vim.keymap.set('n', '<leader>я', '<C-w>c', { noremap = true, silent = true, desc = "Close window" })
 vim.keymap.set('n', '<leader>вж', '<C-w>v', { noremap = true, silent = true, desc = "Split window vertically" })
-vim.keymap.set('n', '<leader>вх', '<C-w>s', { noremap = true, silent = true, desc = "Split window horizontally" })
+vim.keymap.set('n', '<leader>вs', '<C-w>s', { noremap = true, silent = true, desc = "Split window horizontally" })
 -- Navigate between splits
 vim.keymap.set({ 'v', 'n' }, '<C-k>', ':bn!<CR>', { noremap = true, silent = true, desc = "Next buffer" })
 vim.keymap.set({ 'v', 'n' }, '<C-j>', ':bp!<CR>', { noremap = true, silent = true, desc = "Previous buffer" })

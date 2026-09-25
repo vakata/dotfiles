@@ -65,9 +65,13 @@ return {
             vim.lsp.config("intelephense", {
                 cmd = { "intelephense", "--stdio" }, -- assumes it's in your PATH
                 root_dir = function(bufnr, on_dir)
-                    if vim.fs.root(bufnr, 'composer.json') then on_dir(vim.fn.getcwd()) end
-                    if vim.fs.root(bufnr, 'vendor') then on_dir(vim.fn.getcwd()) end
-                    if vim.fs.root(bufnr, '.git') then on_dir(vim.fn.getcwd()) end
+                    local root = vim.fs.root(bufnr, {
+                        "composer.json",
+                        ".git",
+                    })
+                    if root then
+                        on_dir(root)
+                    end
                 end,
                 capabilities = capabilities,
                 init_options = {
@@ -80,8 +84,14 @@ return {
                 cmd = { "zls" }, -- assumes it's in your PATH
                 capabilities = capabilities,
                 root_dir = function(bufnr, on_dir)
-                    if vim.fs.root(bufnr, 'build.zig') then on_dir(vim.fn.getcwd()) end
-                    if vim.fs.root(bufnr, '.git') then on_dir(vim.fn.getcwd()) end
+                    local root = vim.fs.root(bufnr, {
+                        "build.zig",
+                        ".git",
+                    })
+
+                    if root then
+                        on_dir(root)
+                    end
                 end,
             })
             vim.lsp.enable({"intelephense","zls"})
@@ -119,8 +129,6 @@ return {
             -- Setup keymaps
             vim.keymap.set("n", "<leader>lh", require("hover").hover, {desc = "hover.nvim"})
             vim.keymap.set("n", "<leader>лх", require("hover").hover, {desc = "hover.nvim"})
-            vim.keymap.set("n", "<leader>lk", require("hover").hover, {desc = "hover.nvim"})
-            vim.keymap.set("n", "<leader>лк", require("hover").hover, {desc = "hover.nvim"})
             -- vim.keymap.set("n", "gK", require("hover").hover_select, {desc = "hover.nvim (select)"})
             -- vim.keymap.set("n", "<C-p>", function() require("hover").hover_switch("previous") end, {desc = "hover.nvim (previous source)"})
             -- vim.keymap.set("n", "<C-n>", function() require("hover").hover_switch("next") end, {desc = "hover.nvim (next source)"})

@@ -16,7 +16,7 @@ return {
                 border = "rounded"
             },
         },
-        scroll = { enabled = true },
+        scroll = { enabled = false },
         lazygit = {
             config = {
                 quitOnTopLevelReturn = true,

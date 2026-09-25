@@ -2,7 +2,7 @@
 	name = Ivan Bozhanov
 	email = git@vakata.com
 [core]
-	excludesfile = /Users/vakata/.gitignore
+	excludesfile = ~/.gitignore
 	editor = vim
 	fileMode = false
 [pull]

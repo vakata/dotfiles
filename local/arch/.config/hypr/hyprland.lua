@@ -15,6 +15,14 @@
 -- Create your files separately and then require them like this:
 -- require("myColors")
 
+hl.env("GDK_BACKEND", "wayland,x11")
+hl.env("GDK_SCALE", "2")
+hl.env("GDK_DPI_SCALE", "0.7")
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
+})
 
 ------------------
 ---- MONITORS ----
@@ -273,8 +281,11 @@ hl.animation({
 
 hl.window_rule({
     match = {
-        title = "^control-.*",
+        initial_class = "^Signer-picker$",
     },
+    float = true,
+    center = true,
+    size = { 1050, 250 },
     border_size = 2,
 })
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
@@ -301,6 +312,7 @@ hl.window_rule({
     float = true,
     center = true,
     size = { 900, 700 },
+    border_size = 2,
 })
 
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
@@ -352,6 +364,7 @@ hl.config({
         kb_rules   = "",
 
         follow_mouse = 0,
+        float_switch_override_focus = 0,
 
         sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
 
