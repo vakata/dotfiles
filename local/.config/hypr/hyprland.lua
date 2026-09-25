@@ -15,6 +15,14 @@
 -- Create your files separately and then require them like this:
 -- require("myColors")
 
+hl.env("GDK_BACKEND", "wayland,x11")
+hl.env("GDK_SCALE", "2")
+hl.env("GDK_DPI_SCALE", "0.7")
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
+})
 
 ------------------
 ---- MONITORS ----
@@ -277,6 +285,15 @@ hl.window_rule({
     },
     border_size = 2,
 })
+hl.window_rule({
+    match = {
+        initial_class = "^Signer-picker$",
+    },
+    float = true,
+    center = true,
+    size = { 1050, 250 },
+    border_size = 2,
+})
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only"
 -- uncomment all if you wish to use that.
@@ -352,6 +369,7 @@ hl.config({
         kb_rules   = "",
 
         follow_mouse = 0,
+        float_switch_override_focus = 0,
 
         sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
 
