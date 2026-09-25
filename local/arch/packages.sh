@@ -8,15 +8,14 @@ sudo pacman -Syu
 sudo pacman -S --needed base-devel git rsync
 
 sudo pacman -S --needed zsh
-sudo pacman -S --needed zsh-theme-powerlevel10k
 mkdir -p ~/.zsh
 mkdir -p ~/.zsh/plugins
-git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/plugins/zsh-autosuggestions
-git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh/plugins/zsh-syntax-highlighting
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.zsh/plugins/powerlevel10k
+[[ -d ~/.zsh/plugins/zsh-autosuggestions/.git ]] || git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/plugins/zsh-autosuggestions
+[[ -d ~/.zsh/plugins/zsh-syntax-highlighting/.git ]] || git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh/plugins/zsh-syntax-highlighting
+[[ -d ~/.zsh/plugins/powerlevel10k/.git ]] || git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.zsh/plugins/powerlevel10k
 
 # tmux
-sudo pacman -S --nedeed tmux
+sudo pacman -S --needed tmux
 git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 mkdir -p ~/.local/share/tmux/resurrect
 ~/.tmux/plugins/tpm/bin/install_plugins
