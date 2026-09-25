@@ -1,0 +1,4 @@
+viber
+waybar-git
+yay-bin
+yay-bin-debug
