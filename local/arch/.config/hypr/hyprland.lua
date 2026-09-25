@@ -16,7 +16,7 @@
 -- require("myColors")
 
 --hl.env("GDK_BACKEND", "wayland,x11")
-hl.env("GDK_SCALE", "2")
+--hl.env("GDK_SCALE", "2")
 --hl.env("GDK_DPI_SCALE", "0.7")
 
 ------------------
