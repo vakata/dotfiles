@@ -281,12 +281,6 @@ hl.animation({
 
 hl.window_rule({
     match = {
-        title = "^control-.*",
-    },
-    border_size = 2,
-})
-hl.window_rule({
-    match = {
         initial_class = "^Signer-picker$",
     },
     float = true,
@@ -318,6 +312,7 @@ hl.window_rule({
     float = true,
     center = true,
     size = { 900, 700 },
+    border_size = 2,
 })
 
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
