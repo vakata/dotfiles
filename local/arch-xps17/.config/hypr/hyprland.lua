@@ -16,7 +16,7 @@
 -- require("myColors")
 
 -- hl.env("GDK_BACKEND", "wayland,x11")
--- hl.env("GDK_SCALE", "2")
+hl.env("GDK_SCALE", "2")
 -- hl.config({
 --     xwayland = {
 --         force_zero_scaling = true,
@@ -280,7 +280,7 @@ hl.window_rule({
     },
     float = true,
     center = true,
-    size = { 1050, 250 },
+    size = { 1050, 350 },
     border_size = 2,
 })
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
