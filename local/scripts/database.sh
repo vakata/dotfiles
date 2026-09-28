@@ -397,6 +397,28 @@ else
     adminer_port="$port"
 fi
 
+wait_for_port() {
+    local host="$1"
+    local port="$2"
+    local attempts=50
+
+    while (( attempts-- > 0 )); do
+        if php -r '
+            $s = @fsockopen($argv[1], (int)$argv[2], $errno, $errstr, 0.1);
+            if ($s === false) {
+                exit(1);
+            }
+            fclose($s);
+        ' "$host" "$port"; then
+            return 0
+        fi
+
+        sleep 0.1
+    done
+
+    return 1
+}
+
 if [[ "$type" != "sqlite" && -n "$prox" ]]; then
 
     tunnel_port="$(find_free_port "$SSH_BASE_PORT")"
@@ -417,7 +439,15 @@ if [[ "$type" != "sqlite" && -n "$prox" ]]; then
     # Give SSH a moment to report an immediate forwarding failure.
     #
 
-    sleep 0.25
+    if ! wait_for_port "127.0.0.1" "$tunnel_port"; then
+        if ! kill -0 "$ssh_pid" 2>/dev/null; then
+            wait "$ssh_pid" 2>/dev/null || true
+            ssh_pid=""
+            die "SSH tunnel failed"
+        fi
+
+        die "SSH tunnel did not become ready"
+    fi
 
     if ! kill -0 "$ssh_pid" 2>/dev/null; then
         wait "$ssh_pid" 2>/dev/null || true
