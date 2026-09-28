@@ -2,14 +2,17 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 # ----------------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------------
 
-ADMINER_PHP="${ADMINER_PHP:-$HOME/dotfiles/local/scripts/adminer.php}"
-ADMINER_CSS="${ADMINER_CSS:-$HOME/dotfiles/local/scripts/adminer.css}"
+ADMINER_PHP="${ADMINER_PHP:-$SCRIPT_DIR/adminer.php}"
+ADMINER_CSS="${ADMINER_CSS:-$SCRIPT_DIR/adminer.css}"
 
-CHROMIUM="${CHROMIUM:-chromium}"
+# Browser executable. Override CHROMIUM to force a particular binary.
+CHROMIUM="${CHROMIUM:-}"
 
 PHP_HOST="127.0.0.1"
 PHP_BASE_PORT=18080
@@ -22,12 +25,12 @@ SSH_BASE_PORT=16998
 #
 # Bitwarden:
 #
-#   db dev.uslugi.io
-#   db dev.uslugi.io other_database
+#   db named
+#   db named other_database
 #
 # Looks for:
 #
-#   db.dev.uslugi.io
+#   db.named
 #
 # Bitwarden notes contain:
 #
@@ -39,7 +42,7 @@ SSH_BASE_PORT=16998
 #
 #   db 'mysql://127.0.0.1:3306/test' '' root ''
 #
-#   db 'mysql://10.0.0.5:3306/test?jump-host' '' webadmin secret
+#   db 'mysql://10.0.0.5:3306/test?jump-host' '' user password
 #
 # Arguments:
 #
@@ -49,32 +52,108 @@ SSH_BASE_PORT=16998
 #   $4  password when using raw connection string
 # ----------------------------------------------------------------------
 
-if [[ -z "${1:-}" ]]; then
-    echo "Usage: $(basename "$0") <connection> [database] [username] [password]" >&2
-    exit 1
-fi
-
-conn="$1"
-db_override="${2:-}"
-
-
-# ----------------------------------------------------------------------
-# Helpers
-# ----------------------------------------------------------------------
-
 die() {
     echo "db: $*" >&2
     exit 1
 }
 
+command -v bw >/dev/null ||
+    die "bw not found"
+
+command -v jq >/dev/null ||
+    die "jq not found"
+
+if [[ -z "${1:-}" ]]; then
+    command -v fzf >/dev/null ||
+        die "fzf not found"
+
+    conn="$(
+        bw list items --search 'db.' |
+            jq -r '.[] | select(.name | startswith("db.")) | .name' |
+            sort -u |
+            sed 's/^db\.//' |
+            fzf \
+                --prompt='Database > ' \
+                --height=40% \
+                --reverse \
+                --border
+    )"
+
+    [[ -n "$conn" ]] || exit 0
+else
+    conn="$1"
+fi
+
+db_override="${2:-}"
+
+# ----------------------------------------------------------------------
+# Helpers
+# ----------------------------------------------------------------------
+
+port_in_use() {
+    local port="$1"
+
+    # PHP is already a required dependency. Using it here avoids depending
+    # on Linux-only `ss` or macOS-specific `lsof`/`netstat` output formats.
+    php -r '
+        $s = @stream_socket_server("tcp://127.0.0.1:" . $argv[1], $errno, $errstr);
+        if ($s === false) { exit(0); }
+        fclose($s);
+        exit(1);
+    ' "$port"
+}
+
 find_free_port() {
     local port="$1"
 
-    while ss -H -ltn "sport = :$port" 2>/dev/null | grep -q .; do
+    while port_in_use "$port"; do
         ((port++))
     done
 
     printf '%s\n' "$port"
+}
+
+find_chromium() {
+    # Explicit override wins. It may be either a command name or an
+    # absolute path (useful for macOS application bundles).
+    if [[ -n "$CHROMIUM" ]]; then
+        if [[ -x "$CHROMIUM" ]]; then
+            printf '%s\n' "$CHROMIUM"
+            return
+        fi
+        if command -v "$CHROMIUM" >/dev/null 2>&1; then
+            command -v "$CHROMIUM"
+            return
+        fi
+        die "Chromium not found: $CHROMIUM"
+    fi
+
+    case "$(uname -s)" in
+        Darwin)
+            local candidate
+            for candidate in \
+                "/Applications/Chromium.app/Contents/MacOS/Chromium" \
+                "$HOME/Applications/Chromium.app/Contents/MacOS/Chromium" \
+                "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+                "$HOME/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; do
+                if [[ -x "$candidate" ]]; then
+                    printf '%s\n' "$candidate"
+                    return
+                fi
+            done
+            ;;
+        *)
+            local candidate
+            for candidate in chromium chromium-browser google-chrome google-chrome-stable; do
+                if command -v "$candidate" >/dev/null 2>&1; then
+                    command -v "$candidate"
+                    return
+                fi
+            done
+            ;;
+    esac
+
+    die "Chromium/Chrome not found (set CHROMIUM to its executable path)"
 }
 
 b64() {
@@ -86,27 +165,16 @@ b64() {
 # Preconditions
 # ----------------------------------------------------------------------
 
-command -v bw >/dev/null ||
-    die "bw not found"
-
-command -v jq >/dev/null ||
-    die "jq not found"
-
 command -v ssh >/dev/null ||
     die "ssh not found"
-
-command -v ss >/dev/null ||
-    die "ss not found"
 
 command -v php >/dev/null ||
     die "php not found"
 
-command -v "$CHROMIUM" >/dev/null ||
-    die "$CHROMIUM not found"
+CHROMIUM="$(find_chromium)"
 
 [[ -f "$ADMINER_PHP" ]] ||
     die "Adminer not found: $ADMINER_PHP"
-
 
 # ----------------------------------------------------------------------
 # Bitwarden lookup
@@ -254,7 +322,6 @@ if [[ "$host" == "127.0.0.1" \
     prox="$conn"
 fi
 
-
 # ----------------------------------------------------------------------
 # Map connection scheme to Adminer driver
 # ----------------------------------------------------------------------
@@ -353,6 +420,47 @@ if [[ -n "$prox" ]]; then
 
     adminer_host="127.0.0.1"
     adminer_port="$tunnel_port"
+fi
+
+if [[ "${DATABASE_MODE:-gui}" == "cli" ]]; then
+    case "$type" in
+        mysql|mariadb)
+            exec mysql \
+                --host="$adminer_host" \
+                --port="$adminer_port" \
+                --user="$user" \
+                --password="$pass" \
+                "$dbnm"
+            ;;
+
+        pgsql|postgres|postgresql)
+            PGPASSWORD="$pass" \
+                psql \
+                    --host="$adminer_host" \
+                    --port="$adminer_port" \
+                    --username="$user" \
+                    --dbname="$dbnm"
+            ;;
+
+        oracle)
+            sqlplus \
+                "$user/$pass@//$adminer_host:$adminer_port/$dbnm"
+            ;;
+
+        mssql|sqlsrv)
+            sqlcmd \
+                -S "$adminer_host,$adminer_port" \
+                -U "$user" \
+                -P "$pass" \
+                -d "$dbnm"
+            ;;
+
+        *)
+            die "No CLI client configured for database type: $type"
+            ;;
+    esac
+
+    exit
 fi
 
 # ----------------------------------------------------------------------

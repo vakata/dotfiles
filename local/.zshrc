@@ -61,6 +61,8 @@ bindkey '^[[F'  end-of-line
 alias y="yazi"
 alias bu="brew update && brew upgrade && brew upgrade --cask --greedy && brew cleanup"
 alias vpn="~/scripts/vpn.sh"
+alias db="~/dotfiles/local/scripts/database.sh"
+alias db-cli="~/dotfiles/local/scripts/database-cli.sh"
 alias g="lazygit"
 alias gp='git pushall ; git pushalltags'
 alias gpo='git pull origin'
