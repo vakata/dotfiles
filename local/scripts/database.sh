@@ -36,6 +36,8 @@ SSH_BASE_PORT=16998
 #
 #   mysql://host:3306/database
 #   mysql://host:3306/database?ssh-host
+#   sqlite://relative/path/database.sqlite
+#   sqlite:///absolute/path/database.sqlite
 #
 #
 # Direct:
@@ -180,52 +182,56 @@ CHROMIUM="$(find_chromium)"
 # Bitwarden lookup
 # ----------------------------------------------------------------------
 
-name="db.$conn"
+if [[ "$conn" == *"://"* ]]; then
 
-if ! bw_items="$(bw list items --search "$name")"; then
-    die "Unable to query Bitwarden"
+    #
+    # Explicit connection string. Skip Bitwarden entirely.
+    #
+
+    match_count=0
+    comm="$conn"
+    user="${3:-}"
+    pass="${4:-}"
+
+else
+    name="db.$conn"
+
+    if ! bw_items="$(bw list items --search "$name")"; then
+        die "Unable to query Bitwarden"
+    fi
+
+    matches="$(
+        jq -c \
+            --arg name "$name" \
+            '[.[] | select(.name == $name)]' \
+            <<< "$bw_items"
+    )"
+
+    match_count="$(jq -r 'length' <<< "$matches")"
+
+    case "$match_count" in
+        0)
+            die "Bitwarden item not found: $name"
+            ;;
+
+        1)
+            #
+            # Exact Bitwarden match.
+            #
+
+            item="$(jq -c '.[0]' <<< "$matches")"
+
+            comm="$(jq -r '.notes // ""' <<< "$item")"
+            user="$(jq -r '.login.username // ""' <<< "$item")"
+            pass="$(jq -r '.login.password // ""' <<< "$item")"
+
+            ;;
+
+        *)
+            die "Multiple Bitwarden items found with exact name: $name"
+            ;;
+    esac
 fi
-
-matches="$(
-    jq -c \
-        --arg name "$name" \
-        '[.[] | select(.name == $name)]' \
-        <<< "$bw_items"
-)"
-
-match_count="$(jq -r 'length' <<< "$matches")"
-
-case "$match_count" in
-    0)
-        #
-        # No Bitwarden match.
-        #
-        # Treat $1 as the actual connection string.
-        #
-
-        comm="$conn"
-        user="${3:-}"
-        pass="${4:-}"
-
-        ;;
-
-    1)
-        #
-        # Exact Bitwarden match.
-        #
-
-        item="$(jq -c '.[0]' <<< "$matches")"
-
-        comm="$(jq -r '.notes // ""' <<< "$item")"
-        user="$(jq -r '.login.username // ""' <<< "$item")"
-        pass="$(jq -r '.login.password // ""' <<< "$item")"
-
-        ;;
-
-    *)
-        die "Multiple Bitwarden items found with exact name: $name"
-        ;;
-esac
 
 [[ -n "$comm" ]] ||
     die "No connection string provided"
@@ -264,41 +270,32 @@ fi
 
 
 # ----------------------------------------------------------------------
-# Database name
+# Database location
 # ----------------------------------------------------------------------
 
-if [[ "$rest" == */* ]]; then
-    hopo="${rest%%/*}"
-    dbnm="${rest#*/}"
+if [[ "$type" == "sqlite" ]]; then
+    dbnm="$rest"
+    [[ -n "$db_override" ]] && dbnm="$db_override"
+    [[ -n "$dbnm" ]] || die "Empty SQLite database path"
+    [[ "$dbnm" == /* ]] || dbnm="$SCRIPT_DIR/$dbnm"
+    host=""
+    port=""
+    prox=""
 else
-    hopo="$rest"
-    dbnm=""
-fi
-
-if [[ -n "$db_override" ]]; then
-    dbnm="$db_override"
-fi
-
-
-# ----------------------------------------------------------------------
-# Host and port
-# ----------------------------------------------------------------------
-
-if [[ "$hopo" != *":"* ]]; then
-    die "No port specified in connection string: $comm"
-fi
-
-host="${hopo%%:*}"
-port="${hopo##*:}"
-
-[[ -n "$host" ]] ||
-    die "Empty database host"
-
-[[ "$port" =~ ^[0-9]+$ ]] ||
-    die "Invalid database port: $port"
-
-if [[ "$host" == "localhost" ]]; then
-    host="127.0.0.1"
+    if [[ "$rest" == */* ]]; then
+        hopo="${rest%%/*}"
+        dbnm="${rest#*/}"
+    else
+        hopo="$rest"
+        dbnm=""
+    fi
+    [[ -n "$db_override" ]] && dbnm="$db_override"
+    [[ "$hopo" == *":"* ]] || die "No port specified in connection string: $comm"
+    host="${hopo%%:*}"
+    port="${hopo##*:}"
+    [[ -n "$host" ]] || die "Empty database host"
+    [[ "$port" =~ ^[0-9]+$ ]] || die "Invalid database port: $port"
+    [[ "$host" == "localhost" ]] && host="127.0.0.1"
 fi
 
 
@@ -314,7 +311,8 @@ fi
 # Explicit ?ssh-host always wins.
 # ----------------------------------------------------------------------
 
-if [[ "$host" == "127.0.0.1" \
+if [[ "$type" != "sqlite" \
+      && "$host" == "127.0.0.1" \
       && -z "$prox" \
       && "$match_count" -eq 1 \
       && "${conn:0:1}" != "@" ]]; then
@@ -333,6 +331,10 @@ case "$type" in
 
     pgsql|postgres|postgresql)
         adminer_driver="pgsql"
+        ;;
+
+    sqlite)
+        adminer_driver="sqlite"
         ;;
 
     mssql|sqlsrv)
@@ -387,10 +389,15 @@ trap cleanup EXIT INT TERM
 # SSH tunnel
 # ----------------------------------------------------------------------
 
-adminer_host="$host"
-adminer_port="$port"
+if [[ "$type" == "sqlite" ]]; then
+    adminer_host="$dbnm"
+    adminer_port=""
+else
+    adminer_host="$host"
+    adminer_port="$port"
+fi
 
-if [[ -n "$prox" ]]; then
+if [[ "$type" != "sqlite" && -n "$prox" ]]; then
 
     tunnel_port="$(find_free_port "$SSH_BASE_PORT")"
 
@@ -425,7 +432,7 @@ fi
 if [[ "${DATABASE_MODE:-gui}" == "cli" ]]; then
     case "$type" in
         mysql|mariadb)
-            exec mysql \
+            mysql \
                 --host="$adminer_host" \
                 --port="$adminer_port" \
                 --user="$user" \
@@ -440,6 +447,11 @@ if [[ "${DATABASE_MODE:-gui}" == "cli" ]]; then
                     --port="$adminer_port" \
                     --username="$user" \
                     --dbname="$dbnm"
+            ;;
+
+        sqlite)
+            command -v sqlite3 >/dev/null || die "sqlite3 not found"
+            sqlite3 "$dbnm"
             ;;
 
         oracle)
@@ -482,7 +494,11 @@ fi
 chmod 600 "$tmpdir/adminer.php"
 
 driver64="$(b64 "$adminer_driver")"
-server64="$(b64 "${adminer_host}:${adminer_port}")"
+if [[ "$type" == "sqlite" ]]; then
+    server64="$(b64 "$adminer_host")"
+else
+    server64="$(b64 "${adminer_host}:${adminer_port}")"
+fi
 user64="$(b64 "$user")"
 pass64="$(b64 "$pass")"
 db64="$(b64 "$dbnm")"
