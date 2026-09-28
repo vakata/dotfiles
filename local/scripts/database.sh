@@ -524,11 +524,19 @@ fi
 chmod 600 "$tmpdir/adminer.php"
 
 driver64="$(b64 "$adminer_driver")"
-if [[ "$type" == "sqlite" ]]; then
-    server64="$(b64 "$adminer_host")"
-else
-    server64="$(b64 "${adminer_host}:${adminer_port}")"
-fi
+case "$type" in
+    oracle)
+        server64="$(b64 "${adminer_host}:${adminer_port}/${dbnm}")"
+        ;;
+
+    sqlite)
+        server64="$(b64 "$adminer_host")"
+        ;;
+
+    *)
+        server64="$(b64 "${adminer_host}:${adminer_port}")"
+        ;;
+esac
 user64="$(b64 "$user")"
 pass64="$(b64 "$pass")"
 db64="$(b64 "$dbnm")"
@@ -559,7 +567,7 @@ if (!isset(\$_GET['username']) && !isset(\$_GET['file'])) {
 
     \$params['username'] = \$user;
 
-    if (\$db !== '') {
+    if (\$driver !== 'oracle' && \$db !== '') {
         \$params['db'] = \$db;
     }
 
