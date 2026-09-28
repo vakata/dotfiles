@@ -63,7 +63,6 @@ alias bu="brew update && brew upgrade && brew upgrade --cask --greedy && brew cl
 alias vpn="~/scripts/vpn.sh"
 alias db="~/dotfiles/local/scripts/database.sh"
 alias db-cli="~/dotfiles/local/scripts/database-cli.sh"
-alias cal="khal list today 5d"
 alias g="lazygit"
 alias gp='git pushall ; git pushalltags'
 alias gpo='git pull origin'
@@ -78,6 +77,12 @@ alias lt='eza -a --long --color=always --git --icons --group --time-style=long-i
 alias c='clear'
 o() {
     open "sftp://$1"
+}
+cal() {
+    if [[ "$1" == "sync" ]]; then
+        vdirsyncer sync >/dev/null 2>&1
+    fi
+    khal list today 5d
 }
 tunnel() {
     ssh -ND 9999 "$1"
