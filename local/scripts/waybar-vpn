@@ -1,0 +1,16 @@
+#!/bin/sh
+
+CONNECTION="wireguard"
+
+if nmcli -t -f NAME,TYPE connection show --active |
+   grep -q "^${CONNECTION}:wireguard$"; then
+
+    DEVICE="$(nmcli -g GENERAL.DEVICES connection show "$CONNECTION" 2>/dev/null | head -n1)"
+    IP="$(nmcli -g IP4.ADDRESS connection show "$CONNECTION" 2>/dev/null | head -n1)"
+
+    printf '{"text":"󰌾","class":"connected","tooltip":"VPN: %s\\nConnected\\nInterface: %s\\nAddress: %s"}\n' \
+        "$CONNECTION" "${DEVICE:-unknown}" "${IP:-unknown}"
+else
+    printf '{"text":"󰦝","class":"disconnected","tooltip":"VPN: %s\\nDisconnected"}\n' \
+        "$CONNECTION"
+fi

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+CONNECTION="wireguard"
+
+if nmcli -t -f NAME,TYPE connection show --active |
+   grep -q "^${CONNECTION}:wireguard$"; then
+    nmcli connection down "$CONNECTION"
+else
+    nmcli connection up "$CONNECTION"
+fi
+
+pkill -RTMIN+8 waybar

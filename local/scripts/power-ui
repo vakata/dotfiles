@@ -1,0 +1,56 @@
+#!/bin/sh
+
+BAT="$(upower -e | grep BAT | head -n1)"
+
+while true; do
+    clear
+
+    echo "Power"
+    echo "─────"
+    echo
+
+    if [ -n "$BAT" ]; then
+        upower -i "$BAT" | awk -F: '
+            /state/        { gsub(/^[ \t]+/, "", $2); printf "State:       %s\n", $2 }
+            /percentage/   { gsub(/^[ \t]+/, "", $2); printf "Battery:     %s\n", $2 }
+            /time to empty/{ gsub(/^[ \t]+/, "", $2); printf "Time left:   %s\n", $2 }
+            /time to full/ { gsub(/^[ \t]+/, "", $2); printf "Time full:   %s\n", $2 }
+            /energy-rate/  { gsub(/^[ \t]+/, "", $2); printf "Power draw:  %s\n", $2 }
+        '
+    else
+        echo "No battery found"
+    fi
+
+    echo
+    CURRENT="$(powerprofilesctl get 2>/dev/null)"
+    echo "Profile:     $CURRENT"
+    echo
+
+    CHOICE="$(
+        printf "power-saver\nbalanced\nperformance\nrefresh\nreboot\nshutdown\nquit\n" |
+        fzf \
+            --prompt="Profile > " \
+            --height=8 \
+            --border \
+            --reverse
+    )"
+
+    case "$CHOICE" in
+        power-saver|balanced|performance)
+            powerprofilesctl set "$CHOICE"
+            ;;
+        refresh)
+            ;;
+        reboot)
+            reboot now
+            exit 0
+            ;;
+        shutdown)
+            shutdown now
+            exit 0
+            ;;
+        quit|"")
+            exit 0
+            ;;
+    esac
+done
