@@ -28,7 +28,8 @@
 
     "clock": {
         "format": "{:%H:%M}",
-        "tooltip-format": "{:%A, %d %B %Y}"
+        "tooltip-format": "{:%A, %d %B %Y}",
+        "on-click": "ghostty -e ikhal"
     },
 
     "hyprland/workspaces": {
