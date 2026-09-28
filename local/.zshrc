@@ -63,6 +63,7 @@ alias bu="brew update && brew upgrade && brew upgrade --cask --greedy && brew cl
 alias vpn="~/scripts/vpn.sh"
 alias db="~/dotfiles/local/scripts/database.sh"
 alias db-cli="~/dotfiles/local/scripts/database-cli.sh"
+alias cal="khal list today 5d"
 alias g="lazygit"
 alias gp='git pushall ; git pushalltags'
 alias gpo='git pull origin'

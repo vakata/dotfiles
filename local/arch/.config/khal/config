@@ -1,0 +1,52 @@
+[calendars]
+
+[[family]]
+path = ~/.local/share/calendars/icloud/1dfe5fea-e9c7-4df6-8fde-c9af5d9cf9e7
+color = yellow
+
+[[work]]
+path = ~/.local/share/calendars/icloud/93C941BC-19F9-41BA-AAA6-7D6EF271CF70
+color = light blue
+
+[[personal]]
+path = ~/.local/share/calendars/icloud/9C456595-A96F-43B7-8DA8-7FC23B009043
+color = dark red
+
+[[birthdays]]
+path = ~/.local/share/calendars/icloud/work
+color = dark green
+
+[locale]
+timeformat = %H:%M
+dateformat = %d.%m.%Y
+longdateformat = %d.%m.%Y
+datetimeformat = %d.%m.%Y %H:%M
+longdatetimeformat = %d.%m.%Y %H:%M
+local_timezone = Europe/Sofia
+default_timezone = Europe/Sofia
+firstweekday = 0
+
+[default]
+timedelta = 7d
+print_new = path
+highlight_event_days = True
+show_all_days = False
+
+[view]
+agenda_event_format = {calendar-color}{start-end-time-style} {title}{reset}
+frame = top
+theme = dark
+blank_line_before_day = True
+
+[keybindings]
+quit = q
+up = k
+down = j
+left = h
+right = l
+today = t
+new = n
+delete = d
+duplicate = p
+view = enter
+save = ctrl s
